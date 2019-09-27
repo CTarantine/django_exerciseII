@@ -20,3 +20,18 @@
 .App-link {
   color: #09d3ac;
 }
+
+.container{
+display: flex;
+flex-direction: row-reverse;
+flex-wrap: wrap;
+justify-content: space-around;
+margin:1em;
+width: 100vw
+}
+.sidebar{
+flex: 1 0;
+}
+.mainContent{
+
+}
