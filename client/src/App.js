@@ -38,7 +38,7 @@ const recentIssues = (allIssues) => (
   issueList(allIssues.sort(orderByCreatedOn).slice(0, 5))
 )
 
-const issueDetails = () => (
+const issueDetails = (issue) => (
   <div>
     {issue.id} - {issue.description}
     <button>{issue.status ? "close" : "open"}</button>
@@ -46,7 +46,7 @@ const issueDetails = () => (
 )
 
 
-const userPreview = () => (
+const userPreview = (user) => (
   <option value={user.id}>{user.username}</option>
 )
 
@@ -64,24 +64,47 @@ const newUserForm = () => (
   </form>
 )
 
-const newIssueForm = () => (
-  <form>
-  <input type ="text" name="description" value="" placeholder="Description"/>
+// convert new issue form to class component
+// (changed from const newIssueForm = ....)
+// 1
+class newIssueForm extends React.Component{
+// 3
+  state = {
+  description:""
+}
+// 5
+handleInput = (event) => {
+this.setState({description:event.target.value})
+}
+
+// 6
+handleSubmit = (event) => {
+  event.preventDefault()
+}
+
+// 2
+  render = () => (
+    // 6
+  <form onSubmit={this.handleSubmit}>
+                                          {/* 4 */}
+  <input type ="text" name="description" onChange={this.value.input} value={this.state.description} placeholder="Description"/>
   <input type="submit" value="New Issue"/>
   </form>
 )
+}
 
 //used to check if each component works after it's added
 //hard coded sample data
 const testUser =
-{[
-  email: "I@me.com",
-  username:"Me",
+[
+  { id: 1,
+   email: "I@me.com",
+   username:"Me",
    issues:
    [
     { description: "a test issue", id: 1, createdOn: "2019-09-27T15:05:18.180058Z" },
     { description: "a test issue 2", id: 2, createdOn: "2019-09-28T15:05:18.180058Z" }]
-]}
+}]
 
 const App = () => (
   <div className="container">
@@ -89,11 +112,13 @@ const App = () => (
     <aside className="sidebar">
       {newUserForm()}
       {newIssueForm()}
-      {recentIssues(testUsers[0].issues)}
+      {recentIssues(testUser[0].issues)}
     </aside>
 
     <article className="mainContent">
-
+      {userList(testUser)}
+      {issueDetails(testUser)}
+      {userIssueList(testUser[0])}
     </article>
   </div>
 )
